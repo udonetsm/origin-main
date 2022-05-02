@@ -2,15 +2,18 @@ package main
 
 import (
 	"net/http"
-	"origin/midwr"
+	"origin-main/controllers"
 
 	"github.com/gorilla/mux"
 )
 
 func Router() *mux.Router {
 	router := mux.NewRouter()
-	router.HandleFunc("/auth/", midwr.GetToken).Methods(http.MethodPost)
-	router.HandleFunc("/auth/", midwr.Render_login).Methods(http.MethodGet)
+	router.HandleFunc("/auth", controllers.GetToken).Methods(http.MethodPost)
+	router.HandleFunc("/auth", controllers.Render_login).Methods(http.MethodGet)
+	router.HandleFunc("/signup", controllers.Render_signup).Methods(http.MethodGet)
+	router.HandleFunc("/signup", controllers.NewUser).Methods(http.MethodPost)
+	router.Handle("/test", controllers.CheckSession(http.HandlerFunc(controllers.TestRequestToApi)))
 	return router
 }
 
